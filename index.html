@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦌</text></svg>" />
+    <title>Idle Zoo 3D — Vườn Cứu Hộ & Bảo Tồn Động Vật</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- 3D Viewport Container -->
+      <div id="viewport-3d"></div>
+      <div id="world-labels"></div>
+
+      <!-- Top Compact Conservation HUD -->
+      <header id="top-hud">
+        <div class="hud-brand">
+          <span class="brand-icon">🦌</span>
+          <div>
+            <h1 id="hud-park-name">Vườn Cứu Hộ Sao Mai</h1>
+            <small id="hud-save-status">💾 Đã tự lưu trên trình duyệt</small>
+          </div>
+        </div>
+
+        <div class="hud-metrics">
+          <div class="metric-pill" title="Kinh phí vận hành từ bán vé & dịch vụ xanh">
+            <span class="m-icon">🪙</span>
+            <div>
+              <span class="m-label">Kinh phí</span>
+              <strong id="hud-money">480 đ</strong>
+            </div>
+          </div>
+
+          <div class="metric-pill" title="Uy tín bảo tồn tăng nhờ giáo dục khách, phúc lợi tốt và tái thả thành công">
+            <span class="m-icon">🌿</span>
+            <div>
+              <span class="m-label">Uy tín Bảo tồn</span>
+              <strong id="hud-reputation">15 điểm</strong>
+            </div>
+          </div>
+
+          <div class="metric-pill" title="Giá vé vào cổng & Mức độ hài lòng của khách">
+            <span class="m-icon">🎟️</span>
+            <div>
+              <span class="m-label">Vé / Hài lòng</span>
+              <strong id="hud-ticket-summary">15đ • 84%</strong>
+            </div>
+          </div>
+
+          <div class="metric-pill" title="Số cá thể đang chăm sóc / Đã tái thả về tự nhiên">
+            <span class="m-icon">🐾</span>
+            <div>
+              <span class="m-label">Cứu hộ / Tái thả</span>
+              <strong id="hud-animals-summary">1 nuôi • 0 thả</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="hud-camera-controls">
+          <button id="btn-cam-reset" class="btn-icon" title="Về góc nhìn mặc định">🎯 Mặc định</button>
+          <button id="btn-cam-zoom-in" class="btn-icon" title="Phóng to">➕</button>
+          <button id="btn-cam-zoom-out" class="btn-icon" title="Thu nhỏ">➖</button>
+          <button id="btn-toggle-debug" class="btn-icon" title="Mở/Đóng công cụ kiểm thử & Debug">🛠️</button>
+        </div>
+      </header>
+
+      <!-- Active Placement / Move / Sell Floating Banner -->
+      <div id="build-mode-banner" class="hidden">
+        <span id="build-mode-text">Đang chọn đặt công trình...</span>
+        <button id="btn-rotate-item" class="btn-secondary btn-sm">🔄 Xoay (R)</button>
+        <button id="btn-cancel-build" class="btn-danger btn-sm">✖ Hủy (Esc)</button>
+      </div>
+
+      <!-- Toast Notification Banner -->
+      <div id="toast-container"></div>
+
+      <!-- Bottom Action Dock -->
+      <nav id="bottom-dock">
+        <button class="dock-btn" data-panel="rescue">
+          <span>🚑</span>
+          <span>Ca Cứu Hộ & Thú</span>
+          <em id="badge-rescue-count" class="dock-badge">1</em>
+        </button>
+        <button class="dock-btn" data-panel="build">
+          <span>🏗️</span>
+          <span>Xây & Cảnh Quan</span>
+        </button>
+        <button class="dock-btn" data-panel="visitors">
+          <span>🎟️</span>
+          <span>Khách & Kinh Tế</span>
+        </button>
+        <button class="dock-btn" data-panel="species">
+          <span>📖</span>
+          <span>Sổ Loài IUCN</span>
+        </button>
+        <button class="dock-btn" data-panel="release">
+          <span>🕊️</span>
+          <span>Tái Thả & Theo Dõi</span>
+          <em id="badge-release-count" class="dock-badge">0</em>
+        </button>
+        <button class="dock-btn" data-panel="profiles">
+          <span>💾</span>
+          <span>Hồ Sơ Vườn</span>
+        </button>
+      </nav>
+
+      <!-- Slide-Over Drawer Panel (Closed or compact so it never blocks the whole park) -->
+      <aside id="side-drawer" class="hidden">
+        <div class="drawer-header">
+          <h2 id="drawer-title">Quản Lý Vườn Cứu Hộ</h2>
+          <button id="btn-close-drawer" class="btn-close" title="Đóng bảng">✖</button>
+        </div>
+        <div id="drawer-body" class="drawer-body"></div>
+      </aside>
+
+      <!-- Debug & Playtest Tools Panel (Default CLOSED per requirement 4) -->
+      <div id="debug-panel" class="hidden">
+        <div class="debug-header">
+          <strong>🛠️ Công cụ Kiểm thử & Nghiệm thu (Mặc định đóng)</strong>
+          <button id="btn-close-debug" class="btn-close">✖</button>
+        </div>
+        <div class="debug-actions">
+          <button id="dbg-spawn-visitor" class="btn-secondary btn-sm">🚶 Đón 1 Khách ngay</button>
+          <button id="dbg-fast-rehab" class="btn-secondary btn-sm">⚡ Thúc đẩy Phục hồi +35%</button>
+          <button id="dbg-trigger-telemetry" class="btn-secondary btn-sm">📡 Nhận tin Vòng cổ GPS ngay</button>
+          <button id="dbg-sim-afk-2h" class="btn-secondary btn-sm">⏳ Mô phỏng nghỉ 2 giờ (Test AFK)</button>
+        </div>
+      </div>
+
+      <!-- Modal Overlay for Release Confirmation / AFK Report / Viewing Board / Import Confirm -->
+      <div id="modal-overlay" class="hidden">
+        <div id="modal-card" class="modal-card">
+          <div class="modal-header">
+            <h3 id="modal-title">Thông báo</h3>
+            <button id="btn-close-modal" class="btn-close">✖</button>
+          </div>
+          <div id="modal-content" class="modal-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

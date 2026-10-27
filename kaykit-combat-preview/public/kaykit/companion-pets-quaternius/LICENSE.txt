@@ -1,0 +1,21 @@
+Creative Commons Zero v1.0 Universal (CC0 1.0)
+Public Domain Dedication
+
+Author: Quaternius (Tomás Lousa)
+Official Packs:
+1. Ultimate Animated Animal Pack (Wolf.glb, Fox.glb, Husky.glb, Stag.glb)
+   - Official Page: https://quaternius.com/packs/ultimateanimatedanimals.html
+   - Direct GLB Mirror: https://github.com/trebeljahr/quaternius-showcase/tree/main/public/glb/animals_pack
+   - License: CC0 1.0 Universal (https://creativecommons.org/publicdomain/zero/1.0/)
+
+2. Easy Enemy Pack (Wasp.glb, Spider.glb, Snake.glb, Frog.glb)
+   - Official Page: https://quaternius.com/packs/easyenemy.html
+   - Direct GLB Mirror: https://github.com/trebeljahr/quaternius-showcase/tree/main/public/glb/easy_enemies_pack
+   - License: CC0 1.0 Universal (https://creativecommons.org/publicdomain/zero/1.0/)
+
+Permissions:
+- Commercial use: YES
+- Modification: YES
+- Distribution: YES
+- Private use: YES
+- Attribution required: NO (credited in ASSET_CREDITS.md for transparency)

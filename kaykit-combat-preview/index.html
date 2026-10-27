@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="data:," />
+  <title>KayKit 3D Combat Room Preview — Duyệt Hình Ảnh & Animation</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="canvas-container"></div>
+  <div id="world-labels"></div>
+
+  <!-- Minimal Floating Toggle when HUD is hidden -->
+  <button id="btn-restore-hud" class="restore-hud-btn hidden" title="Phím tắt: H">
+    👁️ Hiện HUD Kiểm Tra (H)
+  </button>
+
+  <!-- Main Inspection HUD -->
+  <div id="hud-root" class="hud-root">
+    <!-- Top Quick-Action Toolbar -->
+    <header class="top-bar">
+      <div class="brand-block">
+        <span class="badge-3d">3D PREVIEW</span>
+        <div>
+          <h1>Đại Hầm Ngục 3D Mở Rộng (56m × 56m) — KayKit + Thú Đồng Hành</h1>
+          <p id="wave-status-text">Mục tiêu: Diệt đợt Bộ Xương (0/8) khắp 5 khu vực để mở Rương Báu</p>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button id="btn-toggle-pet1" class="hud-btn active" title="Bật/tắt Thú 1: Sói Chiến Cận Chiến (Quaternius CC0)">
+          🐺 Thú 1: Sói Cận Chiến <span class="state-pill">BẬT</span>
+        </button>
+        <button id="btn-toggle-pet2" class="hud-btn active" title="Bật/tắt Thú 2: Hồ Ly Phép Đánh Xa & Hồi Máu (Quaternius CC0)">
+          🦊 Thú 2: Hồ Ly Xa <span class="state-pill">BẬT</span>
+        </button>
+        <button id="btn-swap-pet2-model" class="hud-btn secondary" title="Đổi model Thú 2 giữa Hồ Ly (Fox.glb) và Ong Tinh Linh Bay (Wasp.glb)">
+          🔄 Đổi Thú 2: Hồ Ly / Ong Bay
+        </button>
+        <button id="btn-spawn-wave" class="hud-btn warn" title="Gọi đợt 4 quái Skeleton mới">
+          💀 Gọi Đợt Quái
+        </button>
+        <button id="btn-cast-aoe" class="hud-btn magic" title="Phím K hoặc Chuột Phải: Tung chiêu AOE có vòng cảnh báo dưới đất">
+          ☄️ Thử AOE <span id="aoe-cd-badge" class="cd-pill">Sẵn sàng (K)</span>
+        </button>
+        <button id="btn-reset-room" class="hud-btn secondary" title="Đặt lại toàn bộ phòng, máu, quái và rương">
+          🔄 Đặt Lại Phòng
+        </button>
+        <button id="btn-hide-hud" class="hud-btn ghost" title="Ẩn toàn bộ giao diện để chụp/xem cảnh 3D sạch (Phím H)">
+          👁️ Ẩn HUD (H)
+        </button>
+      </div>
+    </header>
+
+    <!-- Left Controls & Status Card -->
+    <aside class="left-panel">
+      <div class="hero-vitals-card">
+        <div class="vitals-header">
+          <strong id="hero-name-label">🛡️ Hiệp Sĩ (Knight.glb)</strong>
+          <span id="hero-hp-text">100 / 100 HP</span>
+        </div>
+        <div class="hp-bar-track">
+          <div id="hero-hp-fill" class="hp-bar-fill" style="width: 100%"></div>
+        </div>
+        <div class="controls-hint">
+          <span><kbd>WASD</kbd> Di chuyển</span>
+          <span><kbd>J</kbd> / <kbd>Chuột Trái</kbd> Chém</span>
+          <span><kbd>K</kbd> / <kbd>Chuột Phải</kbd> Phép AOE</span>
+          <span><kbd>Space</kbd> Lướt né</span>
+          <span><kbd>Lăn chuột</kbd> Zoom</span>
+        </div>
+      </div>
+
+      <div class="camera-presets-card">
+        <div class="card-title">🎥 Góc Camera & Đội Hình</div>
+        <div class="preset-btn-row">
+          <button class="mini-btn active" data-cam="combat">Góc Chiến Đấu (Chuẩn)</button>
+          <button class="mini-btn" data-cam="overview">Toàn Cảnh Phòng</button>
+          <button class="mini-btn" data-cam="closeup">Cận Cảnh Nhân Vật</button>
+        </div>
+        <div class="preset-btn-row" style="margin-top:6px;">
+          <button class="mini-btn active" data-hero="Knight">🛡️ Hiệp Sĩ (Kiếm+Khiên)</button>
+          <button class="mini-btn" data-hero="Mage">🔮 Pháp Sư (Trượng+Sách)</button>
+          <button class="mini-btn" data-hero="Barbarian">🪓 Chiến Binh (Rìu Lớn)</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Animation Clip Inspector Panel -->
+    <aside class="right-panel">
+      <div class="inspector-card">
+        <div class="card-title">🎬 Bảng Kiểm Tra Animation Thật</div>
+        <div class="live-clip-box">
+          <div class="clip-row">
+            <span class="clip-label">Nhân vật:</span>
+            <code id="live-hero-clip" class="clip-code">Idle_A</code>
+          </div>
+          <div class="clip-row">
+            <span class="clip-label">Thú 1 (Sói):</span>
+            <code id="live-pet1-clip" class="clip-code pet">AnimalArmature|Idle</code>
+          </div>
+          <div class="clip-row">
+            <span class="clip-label">Thú 2 (Xa):</span>
+            <code id="live-pet2-clip" class="clip-code pet">AnimalArmature|Idle</code>
+          </div>
+        </div>
+
+        <div class="inspector-subtitle">Thử nhanh các clip chính (Rig_Medium):</div>
+        <div class="anim-test-grid">
+          <button class="anim-btn" data-clip="Idle_A">Idle_A (Đứng)</button>
+          <button class="anim-btn" data-clip="Running_A">Running_A (Chạy)</button>
+          <button class="anim-btn" data-clip="Dodge_Forward">Dodge_Forward (Lướt)</button>
+          <button class="anim-btn" data-clip="Melee_1H_Attack_Chop">1H_Chop (Chém dọc)</button>
+          <button class="anim-btn" data-clip="Melee_1H_Attack_Slice_Horizontal">1H_Slice (Chém ngang)</button>
+          <button class="anim-btn" data-clip="Melee_2H_Attack_Spin">2H_Spin (Xoay kiếm)</button>
+          <button class="anim-btn" data-clip="Ranged_Magic_Spellcasting">Spellcasting (Niệm)</button>
+          <button class="anim-btn" data-clip="Ranged_Magic_Shoot">Magic_Shoot (Chưởng)</button>
+          <button class="anim-btn" data-clip="Hit_A">Hit_A (Trúng đòn)</button>
+          <button class="anim-btn" data-clip="Death_A">Death_A (Ngã chết)</button>
+          <button class="anim-btn" data-clip="Cheering">Cheering (Ăn mừng)</button>
+          <button class="anim-btn" data-clip="Taunt">Taunt (Khiêu khích)</button>
+        </div>
+
+        <div class="inspector-subtitle">Toàn bộ <span id="total-clip-count">132</span> clip trong Rig_Medium:</div>
+        <select id="all-clips-select" class="clip-select"></select>
+
+        <div class="audit-summary-box">
+          <strong>Kiểm kê thực tế bộ 161 Animation KayKit:</strong>
+          <ul>
+            <li><code>Rig_Medium</code> (8 file GLB): <b>132</b> clip (131 động tác + T-Pose)</li>
+            <li><code>Rig_Large</code> (6 file GLB): <b>29</b> clip (28 động tác + T-Pose)</li>
+            <li>Tổng cộng gộp 2 rig: <code>132 + 29 = 161</code> clip.</li>
+            <li>Số clip <b>độc lập</b> (trừ 17 tên trùng giữa 2 rig): <b>144</b> tên clip (143 động tác + T-Pose).</li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Reward / Chest Modal -->
+    <div id="reward-modal" class="reward-modal hidden">
+      <div class="reward-card">
+        <div class="reward-badge">🏆 QUÉT SẠCH PHÒNG CHIẾN ĐẤU!</div>
+        <h2>Rương Báu Cổ Đại Đã Mở!</h2>
+        <p>Bạn và 2 thú đồng hành đã tiêu diệt toàn bộ đợt Bộ Xương canh giữ hầm ngục.</p>
+        <div class="loot-grid">
+          <div class="loot-item">
+            <span class="loot-icon">🗡️</span>
+            <strong>Kiếm Thánh Hiệp Sĩ</strong>
+            <small>+35 Sát thương cận chiến</small>
+          </div>
+          <div class="loot-item">
+            <span class="loot-icon">🐺</span>
+            <strong>Ấn Sói & Hồ Ly</strong>
+            <small>+20% Tốc đánh thú đồng hành</small>
+          </div>
+          <div class="loot-item">
+            <span class="loot-icon">🪙</span>
+            <strong>250 Vàng Hầm Ngục</strong>
+            <small>Thưởng hoàn thành phòng</small>
+          </div>
+        </div>
+        <div class="reward-actions">
+          <button id="btn-play-again" class="hud-btn warn large">⚔️ Chơi Lại / Gọi Đợt Quái Mới</button>
+          <button id="btn-close-reward" class="hud-btn secondary large">Đóng Bảng Để Ngắm Phòng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <h2>Đang tải mô hình 3D KayKit & Animation...</h2>
+      <p id="loading-progress-text">Khởi tạo hầm ngục, nhân vật, thú đồng hành và quái xương...</p>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

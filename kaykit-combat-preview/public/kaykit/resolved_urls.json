@@ -1,0 +1,30 @@
+{
+  "kaykit-dungeon-remastered": [
+    {
+      "id": "18356749",
+      "name": "Free 1.1",
+      "url": "https://itchio-mirror.cb031a832f44726753d6267436f3b414.r2.cloudflarestorage.com/upload2/game/1915748/18356749?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=3edfcce40115d057d0b5606758e7e9ee%2F20261025%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20261025T042129Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=fda56fddca377f0e8b000002a33fcac2dfc4ea97847d5fac24a14272803bc335"
+    }
+  ],
+  "kaykit-character-animations": [
+    {
+      "id": "15799903",
+      "name": "Free 1.1",
+      "url": "https://itchio-mirror.cb031a832f44726753d6267436f3b414.r2.cloudflarestorage.com/upload2/game/3887237/15799903?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=3edfcce40115d057d0b5606758e7e9ee%2F20261025%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20261025T042132Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=9956d2b7cc8bcb901d5a9312c9a7e76e995b5abddc9389cb102a172cc3c6c354"
+    }
+  ],
+  "kaykit-adventurers": [
+    {
+      "id": "15363167",
+      "name": "Free 2.0",
+      "url": "https://itchio-mirror.cb031a832f44726753d6267436f3b414.r2.cloudflarestorage.com/upload2/game/2169440/15363167?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=3edfcce40115d057d0b5606758e7e9ee%2F20261025%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20261025T042135Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=34987166a9023397e4e28dff4ad1817197b0a842a89c73fedf6f664716b85a4e"
+    }
+  ],
+  "kaykit-skeletons": [
+    {
+      "id": "15363145",
+      "name": "Free 1.1",
+      "url": "https://itchio-mirror.cb031a832f44726753d6267436f3b414.r2.cloudflarestorage.com/upload2/game/2508447/15363145?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=3edfcce40115d057d0b5606758e7e9ee%2F20261025%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20261025T042138Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=692b6705dffc3c4e8b00250c5c58052a4e73067e528419b598d7f916ecfbcd0f"
+    }
+  ]
+}
